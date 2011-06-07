@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="http://cdn.keiyac.org/common/reset-min.css" />
+	<link rel="stylesheet" type="text/css" href="screen.css" />
+	<link rel="stylesheet" type="text/css" href="http://cdn.keiyac.org/common/jquery/css/smoothness/jquery-ui.css" />
+	<title>novescript</title>
+</head>
+<body>
+	<div id="choice_wrapper">
+			<div id="choices"><div class="choice"><a href="#"></a></div></div>
+	</div>
+	<div id="dialogue_wrapper">
+		<div id="dialogue_content">
+		<div id="dialogue_design"></div>
+		<div id="dialogue_data">
+			<span id="speaker"></span>
+			<span id="controls">
+				<a href="#" id="auto">Auto</a>
+				<del>
+				<a href="#" id="skip">Skip</a>
+				<a href="#" id="qsave">QS</a>
+				<a href="#" id="qload">QL</a>
+				<a href="#" id="save">Save</a>
+				<a href="#" id="load">Load</a>
+				</del>
+			</span>
+			<div id="dialogue"></div>
+		</div>
+		</div>
+	</div>
+	<div id="illusts"></div>
+	<div id="audio"></div>
+	<div id="video"></div>
+<script type="text/javascript" src="http://cdn.keiyac.org/common/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="novescript.screen.js"></script>
+<script type="text/javascript" src="novescript.libs.keybind.js"></script>
+<script type="text/javascript" src="novescript.libs.commands.js"></script>
+
+<script type="text/javascript">
+	novescript.loadDiagfile("text/hae01.txt");
+	novescript.nextDialogue();
+</script>
+</body></html>
