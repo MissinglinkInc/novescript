@@ -81,7 +81,7 @@ div#dialogue_content {
 	margin: 0 auto;
 	width: 80%;
 	height: 140px;
-	bottom: 10px;
+	bottom: 3em;
 	z-index: 2;
 }
 

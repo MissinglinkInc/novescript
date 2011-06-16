@@ -4,7 +4,7 @@ novescript.conf = {};
 novescript.conf.imgMargin = 50;
 
 novescript.cmd.load.branch = function(){
-}
+};
 
 var diagAryIdxRead = 0;
 var diagAryIdxLoad = 0;
@@ -19,18 +19,18 @@ novescript.cmd.read.branch = function(text){
 			$choices.append("<p><a href='#' class='choice' data-loaduri='"+text[choice][choiceName]+"' onclick='novescript.decideChoice(\""+text[choice][choiceName]+"\");'>"+choiceName+'</a></p>');
 		}
 	}
-}
+};
 
 novescript.cmd.load.include = function(){
-}
+};
 
 novescript.cmd.read.include = function(text){
 	novescript.loadDiagfile(text);
 	novescript.nextDialogue();
-}
+};
 
 novescript.cmd.load.css = function(text){
-}
+};
 
 novescript.cmd.read.css = function(text){
 	for (var elem in text) {
@@ -39,14 +39,14 @@ novescript.cmd.read.css = function(text){
 					.css(property,text[elem][property])
 		}
 	}
-}
+};
 
 novescript.cmd.load.video = function(text){
 	$("#video").empty();
 	var size = '';
 	size = "width='"+$body.width()+"px'";
 	$("#video").append("<video src='"+text+"' "+size+" preload></video>");
-}
+};
 
 novescript.cmd.read.video = function(text) {
 	var $video = $("video[src='"+text+"']");
@@ -59,7 +59,7 @@ novescript.cmd.read.video = function(text) {
 	$video.parent().show();
 	$video
 		.css("top",($body.height()-$video.height())/2);
-}
+};
 
 novescript.cmd.load.image = function(text){
 	for (var type in text) {
@@ -79,13 +79,14 @@ novescript.cmd.load.image = function(text){
 			$illusts.append("<div id='"+selector+"' class='illust'></div>");
 			for (var atype in text[type]) {
 				$("#"+selector).append("<img src="+text[type][atype]+" class='"+selector+"' id='ns-illusts-"+diagAryIdxLoad+"-"+atype+"' />");
+		//		console.log(text[type][atype]);
 			}
 			$("#"+selector)
 				.hide()
 				.css("margin","0 auto");
 		}
 	}
-}
+};
 
 novescript.cmd.read.image = function(text){
 	for (var type in text) {
@@ -108,6 +109,7 @@ novescript.cmd.read.image = function(text){
 				var imgMaxHeight = 0;
 				$(toShow).find("img").each(function(){
 					imgWidth += $(this).get(0).naturalWidth + 1 + novescript.conf.imgMargin*2;
+					console.log(imgWidth+"/"+diagAryIdxRead);
 					if (imgMaxHeight < $(this).get(0).naturalHeight) {
 						imgMaxHeight = $(this).get(0).naturalHeight;
 					}
@@ -123,7 +125,7 @@ novescript.cmd.read.image = function(text){
 			}
 		}
 	}
-}
+};
 
 
 novescript.cmd.load.audio = function(attr){
@@ -141,7 +143,7 @@ novescript.cmd.load.audio = function(attr){
 	if (attr == "bgmstop") {
 	
 	}
-}
+};
 
 novescript.cmd.read.audio = function(attr) {
 	for (var param in attr) {
@@ -172,4 +174,4 @@ novescript.cmd.read.audio = function(attr) {
 			$(this).get(0).pause();
 		})
 	}
-}
+};

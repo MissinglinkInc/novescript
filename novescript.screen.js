@@ -1,7 +1,9 @@
 var novescript = {};
 novescript.key = {};
 novescript.cmd = {};
+novescript.strage = {};
 novescript.diagAryIdxnow = 0;
+novescript.dispAryIdx = 0;
 
 // constants of jQuery objects
 var $body = $("body");
@@ -17,19 +19,19 @@ var cmdregexp = new RegExp( "^%(\\w+)%$","" );
 // toggle dialog window
 novescript.toggleDialogue = function(){
 	$dialogWrapper.toggle();
-}
+};
 
 // go next dialog
 novescript.nextDialogue = function(){
-	$dialog.html("");
+novescript.dispAryIdx = 0;
 		for (var speaker in novescript.diagAry[novescript.diagAryIdxnow]) {
+			console.log(novescript.diagAryIdxnow+" / "+speaker);
 			var text = novescript.diagAry[novescript.diagAryIdxnow][speaker];
 			var command = cmdregexp.exec(speaker);
 			// call function
 			if (cmdregexp.test(speaker)) {
 				try {
 					novescript.cmd.read[command[1]](text);
-					console.log(command[1]);
 				}
 				catch (e) {
 					console.log(e);
@@ -42,27 +44,55 @@ novescript.nextDialogue = function(){
 
 			// read & show dialog from dialog-array
 			else {
-				$("#video").hide().find("video").get(0).pause();
-				$dialogWrapper.show();
-				$illusts.show();
-				$choices.hide();
-				$speaker.html(speaker);
-				$dialog.html(text);
 				novescript.diagAryIdxnow++;
+				try {
+					$("#video").hide().find("video").get(0).pause();
+				}
+				catch (e) {
+					console.log(e.description);
+				}
+				novescript.showDialog(speaker,text);
 			}
 		}
-		console.log(novescript.diagAryIdxnow);
-}
+};
+
+novescript.showDialog = function(speaker,text) {
+	$dialog.html("");
+	$dialogWrapper.show();
+	$illusts.show();
+	$choices.hide();
+	$speaker.html(speaker);
+	$dialog.html(text);
+};
+
+novescript.resetAllObj = function(){
+	$dialogWrapper.show();
+	$(".illust").each(function(){
+		$(this).remove();
+	});
+	$(".background").each(function(){
+		$(this).remove();
+	});
+	$("audio").each(function(){
+		$(this).get(0).pause();
+		$(this).remove();
+	});
+	$("video").each(function(){
+		$(this).get(0).pause();
+		$(this).remove();
+	});
+};
 
 // called after decided a choice
 novescript.decideChoice = function(dialogsUri){
 	novescript.loadDiagfile(dialogsUri);
 	novescript.nextDialogue();
 	return false;
-}
+};
 
 // load dialog file
 novescript.loadDiagfile = function(dialogsUri){
+	novescript.diagFilenow = dialogsUri;
 	var diagAryIdx;
 	novescript.diagAry = [];
 	novescript.diagAryIdxnow = 0;
@@ -94,4 +124,18 @@ novescript.loadDiagfile = function(dialogsUri){
 				alert(textStatus,errorThrown);
 			}
 	});
-}
+};
+
+function disableSelection(target){
+	if (typeof target.onselectstart!="undefined") {//IE route
+	    target.onselectstart=function(){return false};
+	}
+	else if (typeof target.style.MozUserSelect!="undefined") {//Firefox route
+	    target.style.MozUserSelect="none";
+	}
+	else {//All other route (ie: Opera)
+	    target.onmousedown=function(){return false};
+	}
+	target.style.cursor = "default";
+};
+
