@@ -1,4 +1,5 @@
 var novescript = {};
+var novescriptVar = {};
 novescript.key = {};
 novescript.cmd = {};
 novescript.strage = {};
@@ -15,10 +16,24 @@ var $illusts = $("div#illusts");
 
 // Regular expression of commands
 var cmdregexp = new RegExp( "^%(\\w+)%$","" );
+var varDeclareRegexp = new RegExp( "^\\$([\\w\\d_-]+)\\$$","" );
+var varLoadRegexp = new RegExp( "#([\\w\\d_-]+?)#", "g" );
 
 // toggle dialog window
 novescript.toggleDialogue = function(){
 	$dialogWrapper.toggle();
+};
+
+novescript.loadVar = function(target) {
+	var replaced = target.replace(varLoadRegexp,function(whole,p1){
+		if (!novescriptVar[p1]) {
+			return '';
+		}
+		else {
+			return novescriptVar[p1];
+		}
+	});
+		return replaced;
 };
 
 // go next dialog
@@ -28,6 +43,7 @@ novescript.dispAryIdx = 0;
 			console.log(novescript.diagAryIdxnow+" / "+speaker);
 			var text = novescript.diagAry[novescript.diagAryIdxnow][speaker];
 			var command = cmdregexp.exec(speaker);
+			var variable = varDeclareRegexp.exec(speaker);
 			// call function
 			if (cmdregexp.test(speaker)) {
 				try {
@@ -41,6 +57,12 @@ novescript.dispAryIdx = 0;
 					novescript.nextDialogue();
 				}
 			}
+			else if (varDeclareRegexp.test(speaker)) {
+				novescriptVar[variable[1]] = text;
+				console.log("var / "+variable[1]);
+				novescript.diagAryIdxnow++;
+				novescript.nextDialogue();
+			}
 
 			// read & show dialog from dialog-array
 			else {
@@ -51,7 +73,7 @@ novescript.dispAryIdx = 0;
 				catch (e) {
 					console.log(e.description);
 				}
-				novescript.showDialog(speaker,text);
+				novescript.showDialog(speaker,novescript.loadVar(text));
 			}
 		}
 };

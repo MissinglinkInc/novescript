@@ -16,7 +16,7 @@ novescript.cmd.read.branch = function(text){
 	$choices.show();
 	for (var choice in text) {
 		for (var choiceName in text[choice]) {
-			$choices.append("<p><a href='#' class='choice' data-loaduri='"+text[choice][choiceName]+"' onclick='novescript.decideChoice(\""+text[choice][choiceName]+"\");'>"+choiceName+'</a></p>');
+			$choices.append("<p><a href='#' class='choice' data-loaduri='"+novescript.loadVar(text[choice][choiceName])+"' onclick='novescript.decideChoice(\""+novescript.loadVar(text[choice][choiceName])+"\");'>"+choiceName+'</a></p>');
 		}
 	}
 };
@@ -36,7 +36,7 @@ novescript.cmd.read.css = function(text){
 	for (var elem in text) {
 		for (var property in text[elem]) {
 			$("#"+elem)
-					.css(property,text[elem][property])
+					.css(property,novescript.loadVar(text[elem][property]));
 		}
 	}
 };
@@ -49,7 +49,7 @@ novescript.cmd.load.video = function(text){
 };
 
 novescript.cmd.read.video = function(text) {
-	var $video = $("video[src='"+text+"']");
+	var $video = $("video[src='"+novescript.loadVar(text)+"']");
 	$dialogWrapper.hide();
 	$illusts.hide();
 	$choices.hide();
@@ -69,7 +69,7 @@ novescript.cmd.load.image = function(text){
 			$body.append("<div id=\""+selector+"\"></div>");
 			$("#"+selector)
 				.addClass(type)
-				.css("background-image",'url("'+text[type]+'")')
+				.css("background-image",'url("'+novescript.loadVar(text[type])+'")')
 				.hide();
 		}
 		else if (type == "clear") {
@@ -78,7 +78,7 @@ novescript.cmd.load.image = function(text){
 			var selector = "ns-illusts-"+diagAryIdxLoad;
 			$illusts.append("<div id='"+selector+"' class='illust'></div>");
 			for (var atype in text[type]) {
-				$("#"+selector).append("<img src="+text[type][atype]+" class='"+selector+"' id='ns-illusts-"+diagAryIdxLoad+"-"+atype+"' />");
+				$("#"+selector).append("<img src="+novescript.loadVar(text[type][atype])+" class='"+selector+"' id='ns-illusts-"+diagAryIdxLoad+"-"+atype+"' />");
 		//		console.log(text[type][atype]);
 			}
 			$("#"+selector)
